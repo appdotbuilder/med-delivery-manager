@@ -1,9 +1,19 @@
 
+import { db } from '../db';
+import { usersTable } from '../db/schema';
+import { eq } from 'drizzle-orm';
 import { type User } from '../schema';
 
-export async function getCouriers(): Promise<User[]> {
-    // This is a placeholder declaration! Real code should be implemented here.
-    // The goal of this handler is fetching all users with courier role
-    // Used for assigning couriers to orders
-    return Promise.resolve([]);
-}
+export const getCouriers = async (): Promise<User[]> => {
+  try {
+    const results = await db.select()
+      .from(usersTable)
+      .where(eq(usersTable.role, 'courier'))
+      .execute();
+
+    return results;
+  } catch (error) {
+    console.error('Failed to fetch couriers:', error);
+    throw error;
+  }
+};

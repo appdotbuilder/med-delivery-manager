@@ -1,9 +1,22 @@
 
-export async function calculateDeliveryFee(distance: number): Promise<number> {
-    // This is a placeholder declaration! Real code should be implemented here.
-    // The goal of this handler is calculating delivery fee based on distance
-    // Could implement tiered pricing: base fee + per km rate
+export const calculateDeliveryFee = async (distance: number): Promise<number> => {
+  try {
+    // Input validation
+    if (distance < 0) {
+      throw new Error('Distance cannot be negative');
+    }
+
+    // Tiered pricing structure
     const baseFee = 5000; // Base fee in rupiah
     const perKmRate = 2000; // Per km rate in rupiah
-    return Promise.resolve(baseFee + (distance * perKmRate));
-}
+    
+    // Calculate total fee
+    const totalFee = baseFee + (distance * perKmRate);
+    
+    // Round to nearest rupiah (no decimal places for currency)
+    return Math.round(totalFee);
+  } catch (error) {
+    console.error('Delivery fee calculation failed:', error);
+    throw error;
+  }
+};
